@@ -3,7 +3,16 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Accounts</title>
+
+  {% if title %}
+  <title>Awards-Projects  {{title}}</title>
+  {% else %}
+    <title> Awards-Projects </title>
+  {% endif %}
+
+  {% block styles %}
+    {% bootstrap_css %}
+    <link rel="stylesheet" href="https://cdn.metroui.org.ua/v4.3.2/css/metro-all.min.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
     <!-- Google Fonts -->
@@ -12,46 +21,14 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
     <!-- Material Design Bootstrap -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">
+  {% endblock %}
+
 </head>
 <body>
-  {% include "navbar.html" %}
-  <div class="container mt-3">
-    <div class="row">
-      <!-- Empty div -->
-      <div class="col-md-4"></div>
-      <div class="col-md-4">
-        {% if form.errors %}
-          <p> Password or Username is incorrect </p>
-        {% endif %}
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h3 class="text-center">Sign In</h3>
-          </div>
-          <div class="panel-body">
-            <form  action="/accounts/login/" method="post">
-              {% csrf_token %}
-              {{ form.as_p }}
-              <div class="form-group">
-                <input type="submit" class="btn btn-primary btn-sm" value="Login">
-              </div>
-              <input type="hidden" name="next" value="{{next}}">
-            </form>
-          </div>
-        </div>
-      </div>
-      <!-- empty div -->
-      <div class="col-md-4">
-      </div>
-    </div>
-    <div class="row">
-      <!-- Empty div -->
-      <div class="col-md-4"></div>
-      <div class="col-md-4">
-        <p class=""><a href="/signup">Or create an account...</a></p>
-      </div>
-      <div class="col-md-4"></div>
-  </div>
-</div>
+    {% include "navbar.html" %}
+
+    {% block scripts %}
+    <script src="https://cdn.metroui.org.ua/v4.3.2/js/metro.min.js"></script>
     <!-- JQuery -->
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <!-- Bootstrap tooltips -->
@@ -60,5 +37,7 @@
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
         <!-- MDB core JavaScript -->
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/js/mdb.min.js"></script>
+     {% bootstrap_javascript %}
+    {% endblock %}
 </body>
 </html>
