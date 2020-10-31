@@ -22,6 +22,17 @@ from rest_framework import status
 def index(request):
     return render(request, 'index.html')
 
+@login_required
+def profile(request, username):
+    user = get_object_or_404(User, username=username)
+    profile = Profile.objects.get(user=user)
+    posts = Project.objects.filter(user=user).order_by("-date")
+    
+    post_count = Project.objects.filter(user=user).count()
+    
+    return render(request,'profile/profile.html', {'user':user, 'profile':profile, 'posts':posts, 'post_count':post_count})
+
+
 def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
