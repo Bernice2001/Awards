@@ -18,4 +18,20 @@ class EditProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         exclude = ['user']
+
+class ProjectForm(forms.ModelForm):
+    class Meta:
+        model = Project
+        exclude = ['user', 'profile', 'like']
+
+        
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        exclude = ['project','profile']
+        
+class RatingForm(forms.ModelForm):
+    class Meta:
+        model = Rating
+        exclude = ['project','profile','like']
     

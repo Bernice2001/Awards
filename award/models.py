@@ -101,5 +101,61 @@ class Project(models.Model):
             total = total + items
                     
         return total / len(ave)
+
+class Rating(models.Model):
+    design = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)])
+    usability = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)])
+    content = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)])
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='post_ratings')
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='rater_profile')
+    
+    def __str__(self):
+        return self.project.project_name
+    
+    def design_rate(self):
+        design = (self.design * 10)
+        return design
+    
+    def usability_rate(self):
+        usability = (self.usability * 10)
+        return usability
+    
+    def content_rate(self):
+        content = (self.content * 10)
+        return content
+            
+    
+class Follow(models.Model):
+    follower = models.ForeignKey(User, on_delete=models.CASCADE, related_name='follower')
+    following = models.ForeignKey(User, on_delete=models.CASCADE, related_name='following')
+    
+class Stream(models.Model):
+    following = models.ForeignKey(User, on_delete=models.CASCADE, related_name='stream_following')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    date = models.DateTimeField()
+    
+    def add_project(sender,instance,*args,**kwargs):
+        project = instance
+        user = project.user
+        followers = Follow.objects.all().filter(following=user)
+        
+        for follower in followers:
+            stream = Stream(project=project, user=follower.follower, date=project.date, following=user)
+            stream.save()
+            
+class Likes(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_like')
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='post_like')
+
+class Comment(models.Model):
+    comment = models.TextField(null=True)
+    # user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_comment')
+    date = models.DateTimeField(auto_now_add=True)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='post_comment')
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='commenter_profile')
+            
+post_save.connect(Stream.add_project, sender=Project)
+    
             
 

@@ -50,6 +50,127 @@ def profile_edit(request,username):
     legend = 'Edit Profile'
     return render(request, 'profile/update.html', {'legend':legend, 'form':EditProfileForm})
 
+@login_required
+def single_project(request,post_id):
+    post = get_object_or_404(Project, id=post_id)
+    # pics = Screenshot.objects.get(project=post_id)
+    user = request.user
+    profile = get_object_or_404(Profile, user=user)
+    comments = Comment.objects.filter(project=post).order_by('-date')
+    rating = Rating.objects.filter(project=post)
+    if_rate = Rating.objects.filter(profile=profile).exists()
+    
+    try:        
+        if request.method == "POST":
+            form_rate = RatingForm(request.POST)
+            if form_rate.is_valid():
+                data = form_rate.save(commit=False)
+                data.project = post
+                data.profile = profile
+                data.save()
+                return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+            else:
+                form = RatingForm()
+    except ValueError:
+        raise Http404()
+                
+    
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = request.POST.get("comment")
+            user = request.user
+            project = post
+            get_comment = Comment(comment=comment, project=project,profile=profile)
+            get_comment.save()
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        else:
+            form = CommentForm()
+    
+    return render(request, 'awards.html', {'post':post, 'form':CommentForm, 'comments':comments, 
+                                           'profile':profile, 'form_rate':RatingForm, 'rating':rating,
+                                            'if_rate':if_rate}) 
+
+ @login_required
+def like(request,post_id):
+    user = request.user
+    post = Project.objects.get(id=post_id)
+    current_likes = post.like
+    
+    liked = Likes.objects.filter(user=user, project=post).count()
+    
+    if not liked:
+        like = Likes.objects.create(user=user,project=post)
+        
+        current_likes = current_likes + 1
+        
+    else:
+        Likes.objects.filter(user=user,project=post).delete()
+        current_likes = current_likes - 1
+        
+    post.like = current_likes
+    post.save() 
+    
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))  
+
+@login_required
+def follow(request, username, option):
+    user = request.user
+    folllowing = get_object_or_404(User, username=username)
+    
+    try:
+        f, created = Follow.objects.get_or_create(follower=user, following=folllowing)
+        
+        if int(option) == 0:
+            f.delete()
+            Stream.objects.filter(following=folllowing, user=user).all().delete()
+            
+        else:
+            posts = Project.objects.all().filter(user=folllowing)[:10]
+            
+            with transaction.atomic():
+                for post in posts:
+                    stream = Stream(post=post, user=user, date=post.date, following=folllowing)
+                    stream.save()
+                    
+        return HttpResponseRedirect(reverse('profile', args=[username]))
+    except User.DoesNotExist:
+        return HttpResponseRedirect(reverse('profile', args=[username]))      
+
+@login_required
+def post_project(request):
+    userX = request.user
+    user = Profile.objects.get(user=request.user)
+    
+    if request.method == "POST":
+        
+        form = ProjectForm(request.POST, request.FILES)
+        
+        if form.is_valid():
+            data = form.save(commit=False)
+            data.profile = user
+            data.user = userX
+            data.save()
+            return redirect('/')
+        else:
+            return False
+    
+    return render(request, 'new_post.html', {'form':ProjectForm, 'form_s':ScreenshotForm})
+
+
+def search_results(request):
+    
+    if "project" in request.GET and request.GET["project"]:
+        search_term = request.GET.get("project")
+        searched_projects = Project.search_projects(search_term)
+        message = f"{search_term}"
+
+        return render(request, 'search.html',{"message":message, "post":searched_projects})
+
+    else:
+        message = "You haven't searched for any project"
+        return render(request, 'search.html',{"message":message})
+
 
 def signup(request):
     if request.method == 'POST':
