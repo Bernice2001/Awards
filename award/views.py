@@ -20,7 +20,8 @@ from rest_framework.views import APIView
 from rest_framework import status
 
 def index(request):
-    return render(request, 'index.html')
+    posts =Project.objects.all()
+    return render(request, 'index.html', {'posts':posts})
 
 @login_required
 def profile(request, username):
