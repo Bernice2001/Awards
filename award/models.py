@@ -43,3 +43,63 @@ def update_user_profile(sender, instance, created, **kwargs):
         Profile.objects.create(user=instance)
     instance.profile.save()
 
+class Project(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='post_user')
+    image = CloudinaryField('image')
+    project_name = models.CharField(max_length=120, null=True)
+    description = models.TextField(max_length=1000, verbose_name='project Description', null=True)
+    date = models.DateTimeField(auto_now_add=True)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='post_profile')
+    like = models.IntegerField(default=0)
+    
+    # class Meta:
+    #     ordering = ['-date',]
+    
+    def __str__(self):
+        return self.project_name
+    
+    def save_image(self):
+        self.save()
+        
+    @classmethod
+    def search_projects(cls,search_term):
+        posts = Project.objects.filter(project_name__icontains=search_term)
+        return posts
+        
+    def delete_image(self):
+        self.delete()  
+        
+    def no_of_rating(self):
+        ratings = Rating.objects.filter(project=self)
+        return len(ratings)
+    
+    def ave_des(self):
+        rate = Rating.objects.filter(project=self)
+        ret = rate.aggregate(Avg('design'))
+        design = ret['design__avg']
+        return design
+    
+    def ave_use(self):
+        rate = Rating.objects.filter(project=self)
+        ret = rate.aggregate(Avg('usability'))
+        usability = ret['usability__avg']
+        return usability
+    
+    def ave_cont(self):
+        rate = Rating.objects.filter(project=self)
+        ret = rate.aggregate(Avg('content')) 
+        content = ret['content__avg']
+        return content
+    
+    def all_ave(self):
+        total = 0
+        a = Rating.objects.filter(project=self)
+        ave = [a.aggregate(Avg('design'))['design__avg'], a.aggregate(Avg('usability'))['usability__avg'], a.aggregate(Avg('content'))['content__avg']]
+        
+        for items in ave:
+            total = total + items
+                    
+        return total / len(ave)
+            
+
