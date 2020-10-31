@@ -26,11 +26,28 @@ def index(request):
 def profile(request, username):
     user = get_object_or_404(User, username=username)
     profile = Profile.objects.get(user=user)
-    posts = Project.objects.filter(user=user).order_by("-date")
+    # posts = Project.objects.filter(user=user).order_by("-date")
     
-    post_count = Project.objects.filter(user=user).count()
+    # post_count = Project.objects.filter(user=user).count()
     
-    return render(request,'profile/profile.html', {'user':user, 'profile':profile, 'posts':posts, 'post_count':post_count})
+    return render(request,'profile/profile.html', {'user':user, 'profile':profile})
+
+def profile_edit(request,username):
+    user = get_object_or_404(User, username=username)
+    profile = user.profile
+    form = EditProfileForm(instance=profile)
+    
+    if request.method == "POST":
+        form = EditProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            data = form.save(commit=False)
+            data.user = user
+            data.save()
+            return HttpResponseRedirect(reverse('profile', args=[username]))
+        else:
+            form = EditProfileForm(instance=profile)
+    legend = 'Edit Profile'
+    return render(request, 'profile/update.html', {'legend':legend, 'form':EditProfileForm})
 
 
 def signup(request):

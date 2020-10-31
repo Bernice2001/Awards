@@ -13,7 +13,7 @@
     <div class="card-container">
 
         {% if profile.avatar %}
-        <img class="round img-fluid rounded-circle" src="{{ profile.avatar.url }}" alt="userpic" />
+        <img class="round img-fluid rounded-circle" src="{{ profile.profile_pic.url }}" alt="userpic" />
         {% else %}
         <img class="round img-fluid rounded-circle" src="/static/img/code.jpg" alt="userpic" />
         {% endif %}
@@ -65,17 +65,11 @@
        
         <div class="buttons">
             {% if request.user == profile.user %}
-            <a href="{% url 'editProfile' profile.user %}" class="btn primary">
+            <a href="{% url 'editProfile' profile.user.username %}" class="btn primary">
                 Edit Profile
             </a>
             {% endif %}
-            {% if follow_status == True %}
-            <a class="btn btn-outline-danger" href="{% url 'follow' profile.user 0 %}">Unfollow</a>
-            {% else %}
-            <a class="btn btn-outline-success" href="{% url 'follow' profile.user 1 %}">Follow</a>
-            {% endif %}
-
-        </div>
+       
     </div>
 </div>
     <hr>
@@ -121,7 +115,7 @@
 {% else %}
 <div class="text-center">
 <h4>You Have Not Posted Any Projects</h4>
-<a class="btn btn-md btn-outline-teal" href="{% url 'addProject' %}">Upload Project</a>
+<a class="btn btn-md btn-outline-teal" href="">Upload Project</a>
 </div>
 <br>
 <hr>
