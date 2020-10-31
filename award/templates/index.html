@@ -9,6 +9,14 @@
 
 {% block content %} 
 <div class="container-fluid">
+<div class="container">
+  <form action="">
+    <div class="md-form active-pink active-pink-2 mb-3 mt-0">
+      <input class="form-control" name="project" type="text" placeholder="Search Project" aria-label="Search">
+    </div>
+    <button class="btn btn-md btn-outline-secondary" type="submit">Search</button>
+  </form>
+</div>
 
     <div class="row">
         <div class="col-md-2"></div>
@@ -63,11 +71,11 @@
   <div class="card-body">
 
     <!-- Title -->
-    <h4 class="card-title">{{ post.title}}</h4>
+    <h4 class="card-title">{{ post.project_name}}</h4>
     <!-- Text -->
     <p class="card-text">{{post.description}}</p>
     <!-- Button -->
-    <a href="#" class="btn btn-primary">Button</a>
+    <a href="{% url 'post' post.id %}" class="btn btn-primary">View Project</a>
 
   </div>
 

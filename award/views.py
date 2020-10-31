@@ -53,7 +53,6 @@ def profile_edit(request,username):
 @login_required
 def single_project(request,post_id):
     post = get_object_or_404(Project, id=post_id)
-    # pics = Screenshot.objects.get(project=post_id)
     user = request.user
     profile = get_object_or_404(Profile, user=user)
     comments = Comment.objects.filter(project=post).order_by('-date')
@@ -87,11 +86,11 @@ def single_project(request,post_id):
         else:
             form = CommentForm()
     
-    return render(request, 'awards.html', {'post':post, 'form':CommentForm, 'comments':comments, 
+    return render(request, 'post.html', {'post':post, 'form':CommentForm, 'comments':comments, 
                                            'profile':profile, 'form_rate':RatingForm, 'rating':rating,
                                             'if_rate':if_rate}) 
 
- @login_required
+@login_required
 def like(request,post_id):
     user = request.user
     post = Project.objects.get(id=post_id)
