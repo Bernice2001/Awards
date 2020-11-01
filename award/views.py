@@ -86,7 +86,7 @@ def single_project(request,post_id):
         else:
             form = CommentForm()
     
-    return render(request, 'post.html', {'post':post, 'form':CommentForm, 'comments':comments, 
+    return render(request, 'awards.html', {'post':post, 'form':CommentForm, 'comments':comments, 
                                            'profile':profile, 'form_rate':RatingForm, 'rating':rating,
                                             'if_rate':if_rate}) 
 
