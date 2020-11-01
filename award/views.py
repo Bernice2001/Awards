@@ -154,7 +154,7 @@ def post_project(request):
         else:
             return False
     
-    return render(request, 'new_post.html', {'form':ProjectForm, 'form_s':ScreenshotForm})
+    return render(request, 'add_post.html', {'form':ProjectForm})
 
 
 def search_results(request):
