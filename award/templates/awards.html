@@ -1,0 +1,64 @@
+{%include 'base.html'%}
+{% load static %}
+{% load cloudinary %}
+{% load bootstrap4 %}
+
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/awards.css' %}">  
+<link rel="stylesheet" href="{% static 'js/jquery.easypiechart.js' %}">  
+{% endblock  %}
+  
+
+{% block content %} 
+
+<div class="container-fluid">
+    <div class="row">
+
+        <!-- Grid column -->
+        <div class="col-md-12 mb-3 main_pic">
+      
+          <img src="{{ post.image.url }}" class="img-fluid z-depth-1" alt="Responsive image">
+      
+        </div>
+        <!-- Grid column -->
+      
+      </div>
+      <!-- Grid row -->
+      
+      <!-- Grid row -->
+      <div class="row">
+      
+        <!-- Grid column -->
+        <div class="col-lg-4 col-md-12 mb-3 first">
+      
+          <img src="{{ post.screenshots.image_1.url }}" class="img-fluid z-depth-1"
+            alt="Responsive image">
+      
+        </div>
+        <!-- Grid column -->
+      
+        <!-- Grid column -->
+        <div class="col-lg-4 col-md-6 mb-3 second">
+      
+          <img src="{{ post.screenshots.image_2.url }}" class="img-fluid z-depth-1"
+            alt="Responsive image">
+      
+        </div>
+        <!-- Grid column -->
+      
+        <!-- Grid column -->
+        <div class="col-lg-4 col-md-6 mb-3 third">
+      
+          <img src="{{ post.screenshots.image_3.url }}" class="img-fluid z-depth-1"
+            alt="Responsive image">
+      
+        </div>
+        <!-- Grid column -->
+      
+      </div>
+      <!-- Grid row -->
+      <div class="circle mt-5">
+        <div class="box">   
+        {% if post.ave_des > 0 %}
+          <div class="chart" data-percent="{% widthratio post.ave_des|floatformat:1 10 100 %}" data-scale-color="#00000000">{{ post.ave_des|floatformat:1 }}</div>
