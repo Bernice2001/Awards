@@ -3,7 +3,7 @@
 {% load cloudinary %}
 
 {% block styles %}
-<link rel="stylesheet" href="">  
+<link rel="stylesheet" href="{% static 'css/main.css'%}">  
 {% endblock  %}
   
 
@@ -26,7 +26,6 @@
 
     <!-- Title -->
     <h4 class="card-title h4 pb-2"><strong>Awards</strong></h4>
-  
     <!-- Linkedin -->
     <a class="fa-lg p-2 m-2 li-ic"><i class="fab fa-linkedin-in grey-text"></i></a>
     <!-- Twitter -->
@@ -68,7 +67,9 @@
   </div>
 
 </div>
-<!-- Card -->                                                              
+<!-- Card -->  
+<br>
+
       </div>
       {% endfor %}
     </div>
