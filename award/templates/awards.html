@@ -1,4 +1,4 @@
-%include 'base.html'%}
+{%include 'base.html'%}
 {% load static %}
 {% load cloudinary %}
 {% load bootstrap4 %}
@@ -18,24 +18,7 @@
       <!-- Grid row -->
       <!-- Grid row -->
       <div class="row">
-        <!-- Grid column -->
-        <div class="col-lg-4 col-md-12 mb-3 first">
-          <img src="{{ post.screenshots.image_1.url }}" class="img-fluid z-depth-1"
-            alt="Responsive image">
-        </div>
-        <!-- Grid column -->
-        <!-- Grid column -->
-        <div class="col-lg-4 col-md-6 mb-3 second">
-          <img src="{{ post.screenshots.image_2.url }}" class="img-fluid z-depth-1"
-            alt="Responsive image">
-        </div>
-        <!-- Grid column -->
-        <!-- Grid column -->
-        <div class="col-lg-4 col-md-6 mb-3 third">
-          <img src="{{ post.screenshots.image_3.url }}" class="img-fluid z-depth-1"
-            alt="Responsive image">
-        </div>
-        <!-- Grid column -->
+      <!-- Grid column -->
       </div>
       <!-- Grid row -->
       <div class="circle mt-5">
@@ -90,11 +73,6 @@
         <div style="width: 420px;text-align:left;" class="container">
           <div class="card">
             <div class="card-body">
-              {% if post.profile.avatar.url %}
-              <img src="{{ post.profile.avatar.url }}" class="float-left rounded-circle img-fluid">
-              {% else %}
-              <img src="/static/img/code.jpg" class="float-left rounded-circle img-fluid">
-              {% endif %}
               <div class="message">
                 <h5 style="text-decoration: underline;">{{ post.profile.user.first_name }} {{ post.profile.user.last_name }}</h5>
                 <h6 class="text-muted">@{{ post.profile.user.username }}</h6>
@@ -124,11 +102,6 @@
       {% for items in rating %}
         <div class="card">
             <div class="card-body">
-              {% if items.profile.avatar.url %}
-              <img src="{{ items.profile.avatar.url }}" class="float-left rounded-circle img-fluid">
-              {% else %}
-              <img src="/static/img/code.jpg" class="float-left rounded-circle img-fluid">
-              {% endif %}
               <div class="message">
                 <h5 class="">{{ items.profile.user.first_name }} {{ items.profile.user.last_name }}</h5>
                 <h6 class="text-muted">@{{ items.profile.user.username }}</h6>
@@ -167,13 +140,6 @@
           {% endif %}
 <h3 id="user_reviews" class="mt-5 mb-3" style="text-decoration: underline;">User Reviews</h3>
 <div class="media">
-  {% if profile.avatar.url %}
-  <img class="d-flex img-fluid rounded-circle avatar z-depth-1-half mr-3" src="{{ profile.avatar.url }}"
-  alt="Avatar">
-  {% else %}
-  <img class="d-flex img-fluid rounded-circle avatar z-depth-1-half mr-3" src="/static/img/code.jpg"
-      alt="Avatar">
-  {% endif %}
     <div class="media-body">
       <div class="media mt-3 shadow-textarea">
         <div class="media-body">
@@ -192,14 +158,8 @@
     </div>
   </div>
 <br>
-3:24
 {% for items in comments %}
   <div class="media">
-    {% if items.profile.avatar.url %}
-    <img class="d-flex img-fluid rounded-circle avatar z-depth-1-half mr-3" src="{{ items.profile.avatar.url }}"  alt="Avatar">
-      {% else %}
-      <img class="d-flex img-fluid rounded-circle avatar z-depth-1-half mr-3" src="/static/img/code.jpg" alt="Avatar">
-      {% endif %}
     <div class="media-body">
       <h5 class="mt-0 font-weight-bold blue-text">{{ items.profile.user.first_name }} {{ items.profile.user.last_name }}</h5>
      <span style="color: #111;"> {{ items.comment }}</span>
@@ -239,7 +199,7 @@
 </div>
 <br>
 <!-- Footer -->
-<footer class="page-footer font-small aqua-gradient pt-4">
+<footer class="page-footer font-small purple-gradient-rgba  pt-4">
     <!-- Footer Elements -->
     <div class="container">
       <!--Grid row-->
@@ -262,7 +222,7 @@
               aria-label="Your email" aria-describedby="basic-addon2">
             <div class="input-group-append">
               <button class="btn btn-sm btn-outline-dark my-0" type="button">Subscribe</button>
-            </div>hide
+            </div>
           </form>
         </div>
         <!--Grid column-->
